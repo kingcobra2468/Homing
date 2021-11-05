@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:key="ucrs_service"
+        app:title="UCRS Config">
+
+        <EditTextPreference
+            android:defaultValue="http://127.0.0.1"
+            app:key="ucrs_hostname"
+            app:title="UCRS hostname"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:defaultValue="8080"
+            app:key="ucrs_port"
+            app:title="UCRS port"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="api_gateway"
+        app:title="API Gateway">
+        <CheckBoxPreference
+            app:key="api_gateway_enabled"
+            app:summary="Whether UCRS is running standalone or behind a gateway"
+            app:title="API Gateway Enabled"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:defaultValue="ucrs"
+            app:key="service_name"
+            app:title="Service name"
+            app:summary="Hostname of the UCRS service behind the gateway"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:defaultValue=""
+            app:key="gateway_key"
+            app:title="Gateway key"
+            app:summary="Authentication key if key-based auth is enabled on the gateway"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>
