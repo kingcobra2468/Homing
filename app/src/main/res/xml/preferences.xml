@@ -27,14 +27,14 @@
         <EditTextPreference
             android:defaultValue="ucrs"
             app:key="service_name"
-            app:title="Service name"
             app:summary="Hostname of the UCRS service behind the gateway"
+            app:title="Service name"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue=""
             app:key="gateway_key"
-            app:title="Gateway key"
             app:summary="Authentication key if key-based auth is enabled on the gateway"
+            app:title="Gateway key"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </PreferenceScreen>
