@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 .setPort(preferences.getString("ucrs_port", "8080"))
                 .setGatewayHost(preferences.getString("service_name", "ucrs"))
                 .setGatewayKey(preferences.getString("gateway_key", ""))
-                .connect();
+                .build();
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
     }
@@ -80,19 +80,19 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         switch (key) {
             case "ucrs_hostname":
                 ucrsRepository.setAddress(preferences.getString("ucrs_hostname", "127.0.0.1"))
-                        .connect();
+                        .build();
                 break;
             case "ucrs_port":
                 ucrsRepository.setPort(preferences.getString("ucrs_port", "8080"))
-                        .connect();
+                        .build();
                 break;
             case "service_name":
                 ucrsRepository.setGatewayHost(preferences.getString("service_name", "ucrs"))
-                        .connect();
+                        .build();
                 break;
             case "gateway_key":
                 ucrsRepository.setGatewayKey(preferences.getString("gateway_key", ""))
-                        .connect();
+                        .build();
                 break;
         }
     }

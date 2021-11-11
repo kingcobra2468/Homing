@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UcrsRepository {
     private static UcrsRepository instance;
-    private Map<String, String> headers = new HashMap<>();
+    private final Map<String, String> headers = new HashMap<>();
     private UcrsService service;
     private String address;
     private String port;
@@ -50,7 +50,7 @@ public class UcrsRepository {
         return this;
     }
 
-    public UcrsRepository connect() {
+    public UcrsRepository build() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(String.format("%s:%s", address, port))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -70,7 +70,6 @@ public class UcrsRepository {
                                    Response<TokenRegistrationResponse> response) {
                 if (!response.isSuccessful()) {
                     callback.onError(response.code(), response.errorBody().toString());
-
                     return;
                 }
 
