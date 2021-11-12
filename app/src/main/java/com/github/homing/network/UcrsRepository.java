@@ -2,7 +2,6 @@ package com.github.homing.network;
 
 import android.util.Log;
 
-import com.github.homing.models.HeartbeatRequest;
 import com.github.homing.models.HeartbeatResponse;
 import com.github.homing.models.PingResponse;
 import com.github.homing.models.TokenRegistrationRequest;
@@ -110,7 +109,8 @@ public class UcrsRepository {
 
         call.enqueue(new Callback<HeartbeatResponse>() {
             @Override
-            public void onResponse(Call<HeartbeatResponse> call, Response<HeartbeatResponse> response) {
+            public void onResponse(Call<HeartbeatResponse> call,
+                                   Response<HeartbeatResponse> response) {
                 if (!response.isSuccessful()) {
                     callback.onError(response.code(), response.errorBody().toString());
                     return;

@@ -30,6 +30,17 @@ public class UniversalNotificationService extends FirebaseMessagingService {
     private int notificationCount = 1;
 
     @Override
+    public void onCreate() {
+        PeriodicWorkRequest heartbeatWorkRequest =
+                new PeriodicWorkRequest.Builder(TokenHeartbeatWorker.class, 15,
+                        TimeUnit.MINUTES)
+                        .addTag("heartbeat")
+                        .build();
+        WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("heartbeat",
+                ExistingPeriodicWorkPolicy.KEEP, heartbeatWorkRequest);
+    }
+
+    @Override
     public void onNewToken(String token) {
         ExecutorService executor;
         HandlerThread ht;
@@ -99,14 +110,6 @@ public class UniversalNotificationService extends FirebaseMessagingService {
                 @Override
                 public void onSuccess() {
                     uiHandler.post(() -> {
-                        PeriodicWorkRequest heartbeatWorkRequest =
-                                new PeriodicWorkRequest.Builder(TokenHeartbeatWorker.class, 15,
-                                        TimeUnit.MINUTES)
-                                        .addTag("heartbeat")
-                                        .build();
-                        WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("heartbeat",
-                                ExistingPeriodicWorkPolicy.KEEP, heartbeatWorkRequest);
-
                         Context context = getApplicationContext();
                         int duration = Toast.LENGTH_SHORT;
 

@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
 
 import com.github.homing.R;
 import com.github.homing.network.UcrsCallback;
@@ -17,11 +16,12 @@ import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class TokenHeartbeatWorker extends Worker {
-    private UcrsRepository ucrsRepository;
-    private SharedPreferences preferences;
+    private final UcrsRepository ucrsRepository;
+    private final SharedPreferences preferences;
     private int notificationCount = 16;
 
     public TokenHeartbeatWorker(@NonNull Context context,
@@ -37,7 +37,9 @@ public class TokenHeartbeatWorker extends Worker {
     }
 
     public Result doWork() {
-        String token = preferences.getString("token", "");
+        String token =
+                getApplicationContext().getSharedPreferences("Homing", MODE_PRIVATE).getString(
+                "token", "");
         /// no token set and thus heartbeat is not necessary
         if (token == "") return Result.success();
         ucrsRepository.heartbeat(token, new UcrsCallback() {
