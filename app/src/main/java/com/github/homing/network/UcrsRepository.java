@@ -2,6 +2,8 @@ package com.github.homing.network;
 
 import android.util.Log;
 
+import com.github.homing.models.HeartbeatRequest;
+import com.github.homing.models.HeartbeatResponse;
 import com.github.homing.models.PingResponse;
 import com.github.homing.models.TokenRegistrationRequest;
 import com.github.homing.models.TokenRegistrationResponse;
@@ -72,7 +74,6 @@ public class UcrsRepository {
                     callback.onError(response.code(), response.errorBody().toString());
                     return;
                 }
-
                 callback.onSuccess();
             }
 
@@ -91,15 +92,34 @@ public class UcrsRepository {
             public void onResponse(Call<PingResponse> call, Response<PingResponse> response) {
                 if (!response.isSuccessful()) {
                     callback.onError(response.code(), response.errorBody().toString());
-
                     return;
                 }
-
                 callback.onSuccess();
             }
 
             @Override
             public void onFailure(Call<PingResponse> call, Throwable t) {
+                Log.e("UCRS", t.toString());
+                callback.onError(0, "Unable to perform request");
+            }
+        });
+    }
+
+    public void heartbeat(String token, UcrsCallback callback) {
+        Call<HeartbeatResponse> call = service.tokenHeartbeat(headers, token);
+
+        call.enqueue(new Callback<HeartbeatResponse>() {
+            @Override
+            public void onResponse(Call<HeartbeatResponse> call, Response<HeartbeatResponse> response) {
+                if (!response.isSuccessful()) {
+                    callback.onError(response.code(), response.errorBody().toString());
+                    return;
+                }
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFailure(Call<HeartbeatResponse> call, Throwable t) {
                 Log.e("UCRS", t.toString());
                 callback.onError(0, "Unable to perform request");
             }

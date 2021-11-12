@@ -18,19 +18,24 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import androidx.core.app.NotificationCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 public class UniversalNotificationService extends FirebaseMessagingService {
-    private int notificationCount = 1;
     private final UcrsRepository ucrsRepository = UcrsRepository.getInstance();
+    private int notificationCount = 1;
 
     @Override
     public void onNewToken(String token) {
         ExecutorService executor;
         HandlerThread ht;
         Handler uiHandler, tokenPushHandler;
-
+        Log.i("FcmToken", token);
+        getSharedPreferences("Homing", MODE_PRIVATE).edit().putString("token", token).apply();
         executor = Executors.newSingleThreadExecutor(r -> {
             Thread thread = new Thread(r);
             thread.setDaemon(true);
@@ -44,7 +49,6 @@ public class UniversalNotificationService extends FirebaseMessagingService {
         tokenPushHandler = new Handler(ht.getLooper());
 
         executor.execute(new PushTokenRunnable(token, uiHandler, tokenPushHandler));
-        Log.i("FcmToken", token);
     }
 
     @Override
@@ -95,6 +99,14 @@ public class UniversalNotificationService extends FirebaseMessagingService {
                 @Override
                 public void onSuccess() {
                     uiHandler.post(() -> {
+                        PeriodicWorkRequest heartbeatWorkRequest =
+                                new PeriodicWorkRequest.Builder(TokenHeartbeatWorker.class, 15,
+                                        TimeUnit.MINUTES)
+                                        .addTag("heartbeat")
+                                        .build();
+                        WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("heartbeat",
+                                ExistingPeriodicWorkPolicy.KEEP, heartbeatWorkRequest);
+
                         Context context = getApplicationContext();
                         int duration = Toast.LENGTH_SHORT;
 

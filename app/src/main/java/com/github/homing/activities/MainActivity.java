@@ -11,10 +11,16 @@ import android.widget.Toast;
 import com.github.homing.R;
 import com.github.homing.network.UcrsCallback;
 import com.github.homing.network.UcrsRepository;
+import com.github.homing.services.TokenHeartbeatWorker;
+
+import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private SharedPreferences preferences;
@@ -28,14 +34,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.registerOnSharedPreferenceChangeListener(this);
 
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
         ucrsRepository = UcrsRepository.getInstance()
                 .setAddress(preferences.getString("ucrs_hostname", "127.0.0.1"))
                 .setPort(preferences.getString("ucrs_port", "8080"))
                 .setGatewayHost(preferences.getString("service_name", "ucrs"))
                 .setGatewayKey(preferences.getString("gateway_key", ""))
                 .build();
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
     }
 
     @Override
