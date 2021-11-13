@@ -37,7 +37,7 @@ public class UcrsRepository {
     }
 
     public UcrsRepository setGatewayKey(String key) {
-        headers.put("apiKey", key);
+        headers.put("api-key", key);
         return this;
     }
 
