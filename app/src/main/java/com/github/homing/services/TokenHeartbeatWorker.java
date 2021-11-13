@@ -22,7 +22,6 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class TokenHeartbeatWorker extends Worker {
     private final UcrsRepository ucrsRepository;
     private final SharedPreferences preferences;
-    private int notificationCount = 16;
 
     public TokenHeartbeatWorker(@NonNull Context context,
                                 @NonNull WorkerParameters params) {
@@ -69,16 +68,11 @@ public class TokenHeartbeatWorker extends Worker {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(getApplicationContext().getApplicationContext(),
                         String.valueOf(R.string.channel_id))
-                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setSmallIcon(R.drawable.stethoscope)
                         .setContentTitle("Heartbeat")
                         .setContentText(message)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        notificationManager.notify(notificationCount, builder.build());
-        if (R.integer.max_foreground_notifications > notificationCount - 15) {
-            notificationCount++;
-        } else {
-            notificationCount = 0;
-        }
+        notificationManager.notify(100, builder.build());
     }
 }

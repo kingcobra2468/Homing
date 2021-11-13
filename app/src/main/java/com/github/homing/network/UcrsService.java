@@ -26,11 +26,6 @@ public interface UcrsService {
     Call<HeartbeatResponse> tokenHeartbeat(@HeaderMap Map<String, String> headers,
                                            @Path("rt") String registrationToken);
 
-    @PUT("token/{rt}/update-rt")
-    Call<UpdateTokenResponse> updateToken(@HeaderMap Map<String, String> headers,
-                                          @Path("rt") String registrationToken,
-                                          @Body UpdateTokenRequest updateTokenRequest);
-
     @GET("ping")
     Call<PingResponse> ping(@HeaderMap Map<String, String> headers);
 }

@@ -32,8 +32,8 @@ public class UniversalNotificationService extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         PeriodicWorkRequest heartbeatWorkRequest =
-                new PeriodicWorkRequest.Builder(TokenHeartbeatWorker.class, 15,
-                        TimeUnit.MINUTES)
+                new PeriodicWorkRequest.Builder(TokenHeartbeatWorker.class, 12,
+                        TimeUnit.HOURS)
                         .addTag("heartbeat")
                         .build();
         WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("heartbeat",
@@ -81,7 +81,7 @@ public class UniversalNotificationService extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
                 String.valueOf(R.string.channel_id))
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.dove)
                 .setContentTitle(notification.getTitle())
                 .setContentText(notification.getBody())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
