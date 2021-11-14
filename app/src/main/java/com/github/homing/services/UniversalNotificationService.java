@@ -25,6 +25,9 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+/**
+ * Universal notification service for interacting with FCM.
+ */
 public class UniversalNotificationService extends FirebaseMessagingService {
     private final UcrsRepository ucrsRepository = UcrsRepository.getInstance();
     private int notificationCount = 1;
@@ -59,6 +62,7 @@ public class UniversalNotificationService extends FirebaseMessagingService {
         uiHandler = new Handler(Looper.getMainLooper());
         tokenPushHandler = new Handler(ht.getLooper());
 
+        // attempt to keep pushing token to ucrs until the user has configured the homing properly.
         executor.execute(new PushTokenRunnable(token, uiHandler, tokenPushHandler));
     }
 
@@ -79,6 +83,7 @@ public class UniversalNotificationService extends FirebaseMessagingService {
 
         Log.i("FcmToken", "Message Notification Body: " + message.getNotification().getBody());
 
+        // push notifications as fcm wont do them automatically if app is in foreground
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
                 String.valueOf(R.string.channel_id))
                 .setSmallIcon(R.drawable.dove)
@@ -99,6 +104,13 @@ public class UniversalNotificationService extends FirebaseMessagingService {
         private final Handler tokenPushHandler;
         private final String token;
 
+        /**
+         * Push token runnable which attempts to push token to ucrs token pool.
+         *
+         * @param token            the registration token
+         * @param uiHandler        the ui handler
+         * @param tokenPushHandler the token push handler
+         */
         public PushTokenRunnable(String token, Handler uiHandler, Handler tokenPushHandler) {
             this.token = token;
             this.uiHandler = uiHandler;

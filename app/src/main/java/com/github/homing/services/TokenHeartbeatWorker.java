@@ -19,10 +19,19 @@ import androidx.work.WorkerParameters;
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+/**
+ * Token heartbeat worker for periodically letting ucrs know that this device is alive,
+ */
 public class TokenHeartbeatWorker extends Worker {
     private final UcrsRepository ucrsRepository;
     private final SharedPreferences preferences;
 
+    /**
+     * Instantiates a new Token heartbeat worker.
+     *
+     * @param context the context
+     * @param params  the params
+     */
     public TokenHeartbeatWorker(@NonNull Context context,
                                 @NonNull WorkerParameters params) {
         super(context, params);
@@ -38,13 +47,13 @@ public class TokenHeartbeatWorker extends Worker {
     public Result doWork() {
         String token =
                 getApplicationContext().getSharedPreferences("Homing", MODE_PRIVATE).getString(
-                "token", "");
+                        "token", "");
         /// no token set and thus heartbeat is not necessary
         if (token == "") return Result.success();
         ucrsRepository.heartbeat(token, new UcrsCallback() {
             @Override
             public void onSuccess() {
-                sendNotification("performed heartbeat");
+                sendNotification("Performed heartbeat");
             }
 
             @Override
