@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 .setPort(preferences.getString("ucrs_port", "8080"))
                 .setGatewayHost(preferences.getString("service_name", "ucrs"))
                 .setGatewayKey(preferences.getString("gateway_key", ""))
+                .setKeyHeaderName(preferences.getString("api_key_name", "api-key"))
                 .build();
     }
 
@@ -100,6 +101,22 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             case "gateway_key":
                 ucrsRepository.setGatewayKey(preferences.getString("gateway_key", ""))
                         .build();
+                break;
+            case "api_key_name":
+                ucrsRepository.setKeyHeaderName(preferences.getString("api_key_name", "api-key"));
+                break;
+            case "api_gateway_enabled":
+                boolean apiGatewayState = preferences.getBoolean(
+                        "api_gateway_enabled",
+                        false);
+                if (!apiGatewayState) {
+                    ucrsRepository.resetHeaders();
+                } else {
+                    ucrsRepository.setGatewayHost(preferences.getString("service_name", "ucrs"))
+                            .build();
+                    ucrsRepository.setGatewayKey(preferences.getString("gateway_key", ""))
+                            .build();
+                }
                 break;
         }
     }

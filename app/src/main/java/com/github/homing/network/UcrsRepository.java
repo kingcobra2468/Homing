@@ -20,6 +20,7 @@ public class UcrsRepository {
     private static UcrsRepository instance;
     private final Map<String, String> headers = new HashMap<>();
     private UcrsService service;
+    private String keyHeaderName = "api-key";
     private String address;
     private String port;
 
@@ -37,7 +38,7 @@ public class UcrsRepository {
     }
 
     public UcrsRepository setGatewayKey(String key) {
-        headers.put("api-key", key);
+        headers.put(keyHeaderName, key);
         return this;
     }
 
@@ -48,6 +49,23 @@ public class UcrsRepository {
 
     public UcrsRepository setPort(String port) {
         this.port = port;
+        return this;
+    }
+
+    public UcrsRepository setKeyHeaderName(String newKeyHeaderName) {
+        String key = "";
+        // remove old key header if it exists
+        if (headers.containsKey(keyHeaderName)) {
+            key = headers.remove(keyHeaderName);
+        }
+        keyHeaderName = newKeyHeaderName;
+        setGatewayKey(key);
+
+        return this;
+    }
+
+    public UcrsRepository resetHeaders() {
+        headers.clear();
         return this;
     }
 
@@ -85,12 +103,11 @@ public class UcrsRepository {
 
     public void ping(UcrsCallback callback) {
         Call<PingResponse> call = service.ping(headers);
-
         call.enqueue(new Callback<PingResponse>() {
             @Override
             public void onResponse(Call<PingResponse> call, Response<PingResponse> response) {
                 if (!response.isSuccessful()) {
-                    callback.onError(response.code(), response.errorBody().toString());
+                    callback.onError(response.code(), "Unable to reach UCRS");
                     return;
                 }
                 callback.onSuccess();

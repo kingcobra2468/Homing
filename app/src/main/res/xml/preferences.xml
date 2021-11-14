@@ -31,6 +31,12 @@
             app:title="Service name"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
+            android:defaultValue="api-key"
+            android:dependency="api_gateway_enabled"
+            app:key="api_key_name"
+            app:title="Key header name"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
             android:defaultValue=""
             android:dependency="api_gateway_enabled"
             app:key="gateway_key"
