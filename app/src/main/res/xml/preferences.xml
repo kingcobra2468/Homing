@@ -26,11 +26,19 @@
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue="ucrs"
+            android:dependency="api_gateway_enabled"
             app:key="service_name"
             app:title="Service name"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
+            android:defaultValue="api-key"
+            android:dependency="api_gateway_enabled"
+            app:key="api_key_name"
+            app:title="Key header name"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
             android:defaultValue=""
+            android:dependency="api_gateway_enabled"
             app:key="gateway_key"
             app:title="Gateway key"
             app:useSimpleSummaryProvider="true" />
