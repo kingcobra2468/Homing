@@ -11,7 +11,7 @@ public class TokenRegistrationResponse {
     /**
      * The success of the request.
      */
-    String error;
+    Object error;
 
     /**
      * Instantiates a new Token registration response.
@@ -38,7 +38,7 @@ public class TokenRegistrationResponse {
      *
      * @return the error
      */
-    public String getError() {
+    public Object getError() {
         return error;
     }
 }

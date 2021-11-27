@@ -141,7 +141,7 @@ public class UniversalNotificationService extends FirebaseMessagingService {
                                         "failed. Unable to connect to UCRS.",
                                 duration);
                         toast.show();
-
+                        Log.e("FcmToken", message);
                         tokenPushHandler.postDelayed(PushTokenRunnable.this, 10000);
                     });
                 }
