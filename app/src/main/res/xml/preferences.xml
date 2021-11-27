@@ -22,7 +22,7 @@
         <CheckBoxPreference
             app:key="api_gateway_enabled"
             app:summary="Whether UCRS is running standalone or behind a gateway"
-            app:title="API Gateway Enabled"
+            app:title="API gateway enabled"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue="ucrs"

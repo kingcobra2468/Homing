@@ -150,6 +150,7 @@ public class UcrsRepository {
 
             @Override
             public void onFailure(Call<TokenRegistrationResponse> call, Throwable t) {
+                Log.e("UCRS", t.toString());
                 callback.onError(0, "Unable to perform request");
             }
         });
