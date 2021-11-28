@@ -9,7 +9,7 @@ pipeline {
         stage('Fetch Sources') {
             steps {
                 cleanWs()
-                git branch: 'master', url: 'git@github.com:kingcobra2468/Homing.git'
+                git branch: 'main', url: 'git@github.com:kingcobra2468/Homing.git'
             }
         }
 
